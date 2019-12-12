@@ -7,6 +7,8 @@
     <string name="sw_humidity">Humidity</string>
     <string name="sw_pressure">Pressure</string>
     <string name="sw_weather">Weather</string>
+    <string name="hint">Enter default city</string>
+    <string name="btn">Enter</string>
 
     <string name="menu_weather">Show Weather</string>
     <string name="menu_weather_hist">Show Weather History</string>

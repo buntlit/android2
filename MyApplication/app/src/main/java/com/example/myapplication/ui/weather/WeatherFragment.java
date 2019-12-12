@@ -1,9 +1,12 @@
 package com.example.myapplication.ui.weather;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -27,12 +30,13 @@ public class WeatherFragment extends Fragment {
         final TextView textView = root.findViewById(R.id.text_weather);
         final TextView textTemp = root.findViewById(R.id.text_temp);
         final TextView textHum = root.findViewById(R.id.text_hum);
-        textTemp.setText(MainActivity.textTemp);
-        textHum.setText(MainActivity.textHum);
+
         weatherViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
+                textTemp.setText(MainActivity.textTemp);
+                textHum.setText(MainActivity.textHum);
             }
         });
         return root;

@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -12,6 +13,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.myapplication.ui.weather.WeatherFragment;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -21,6 +23,9 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private Sensor sensorHum;
     public static String textTemp;
     public static String textHum;
+    public static String defCity;
+    SharedPreferences preferences;
 
 
     @Override
@@ -37,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        preferences = getPreferences(MODE_PRIVATE);
+        defCity = preferences.getString("defCity", "Moscow");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -81,6 +90,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Button btn = findViewById(R.id.btn);
+        final EditText editText = findViewById(R.id.enter_city);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!editText.getText().toString().equals("")) {
+                    defCity = editText.getText().toString();
+                }
+                preferences.edit().putString("defCity", defCity).commit();
+                defCity = preferences.getString("defCity", "Moscow");
+            }
+        });
+
+
         sensorTemp = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
         sensorHum = sensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY);
         sensorManager.registerListener(listenerHum, sensorHum, SensorManager.SENSOR_DELAY_NORMAL);
@@ -88,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showTempSensors(SensorEvent event) {
-            textTemp = "Temperature value = " + event.values[0] + "°C";
+        textTemp = "Temperature value = " + event.values[0] + "°C";
 
     }
 

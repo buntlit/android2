@@ -1,12 +1,9 @@
 package com.example.myapplication.ui.weather;
 
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -15,10 +12,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
+import com.example.myapplication.WeatherApi;
+import com.example.myapplication.WeatherApiInterface;
+import com.example.myapplication.model.OpenWeather;
 
-public class WeatherFragment extends Fragment {
+public class WeatherFragment extends Fragment implements WeatherApiInterface {
 
     private WeatherViewModel weatherViewModel;
 
@@ -28,17 +27,36 @@ public class WeatherFragment extends Fragment {
                 ViewModelProviders.of(this).get(WeatherViewModel.class);
         View root = inflater.inflate(R.layout.fragment_weather, container, false);
         final TextView textView = root.findViewById(R.id.text_weather);
-        final TextView textTemp = root.findViewById(R.id.text_temp);
-        final TextView textHum = root.findViewById(R.id.text_hum);
 
         weatherViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
-                textTemp.setText(MainActivity.textTemp);
-                textHum.setText(MainActivity.textHum);
             }
         });
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        WeatherApi.getInstance().addListener(this);
+    }
+
+    @Override
+    public void updateWeather(OpenWeather model) {
+        try {
+            ((TextView) getActivity().findViewById(R.id.text_hum)).setText("Humidity: " + Integer.toString(model.getMain().getHumidity()) + "%");
+            ((TextView) getActivity().findViewById(R.id.text_temp)).setText("Temperature: " + Double.toString(model.getMain().getTemp() - 273.0) + " C");
+            ((TextView) getActivity().findViewById(R.id.text_wind_speed)).setText("Wind speed: " + Double.toString(model.getWind().getSpeed()) + " m/s");
+        }catch (NullPointerException e){
+
+        }
+    }
+
+    @Override
+    public void onPause() {
+        WeatherApi.getInstance().removeListener(this);
+        super.onPause();
     }
 }

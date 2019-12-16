@@ -13,7 +13,6 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.myapplication.ui.weather.WeatherFragment;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -31,10 +30,10 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private SensorManager sensorManager;
-    private Sensor sensorTemp;
-    private Sensor sensorHum;
-    public static String textTemp;
-    public static String textHum;
+//    private Sensor sensorTemp;
+//    private Sensor sensorHum;
+//    public static String textTemp;
+//    public static String textHum;
     public static String defCity;
     SharedPreferences preferences;
 
@@ -105,45 +104,45 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        sensorTemp = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
-        sensorHum = sensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY);
-        sensorManager.registerListener(listenerHum, sensorHum, SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(listenerTemp, sensorTemp, SensorManager.SENSOR_DELAY_NORMAL);
+//        sensorTemp = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
+//        sensorHum = sensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY);
+//        sensorManager.registerListener(listenerHum, sensorHum, SensorManager.SENSOR_DELAY_NORMAL);
+//        sensorManager.registerListener(listenerTemp, sensorTemp, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
-    private void showTempSensors(SensorEvent event) {
-        textTemp = "Temperature value = " + event.values[0] + "°C";
+//    private void showTempSensors(SensorEvent event) {
+//        textTemp = "Temperature value = " + event.values[0] + "°C";
+//
+//    }
 
-    }
-
-    SensorEventListener listenerTemp = new SensorEventListener() {
-        @Override
-        public void onSensorChanged(SensorEvent sensorEvent) {
-            showTempSensors(sensorEvent);
-        }
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int i) {
-
-        }
-    };
-
-    private void showHumSensors(SensorEvent event) {
-        textHum = "Humidity value = " + event.values[0] + "%";
-
-    }
-
-    SensorEventListener listenerHum = new SensorEventListener() {
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        }
-
-        @Override
-        public void onSensorChanged(SensorEvent event) {
-            showHumSensors(event);
-        }
-    };
+//    SensorEventListener listenerTemp = new SensorEventListener() {
+//        @Override
+//        public void onSensorChanged(SensorEvent sensorEvent) {
+//            showTempSensors(sensorEvent);
+//        }
+//
+//        @Override
+//        public void onAccuracyChanged(Sensor sensor, int i) {
+//
+//        }
+//    };
+//
+//    private void showHumSensors(SensorEvent event) {
+//        textHum = "Humidity value = " + event.values[0] + "%";
+//
+//    }
+//
+//    SensorEventListener listenerHum = new SensorEventListener() {
+//
+//        @Override
+//        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+//        }
+//
+//        @Override
+//        public void onSensorChanged(SensorEvent event) {
+//            showHumSensors(event);
+//        }
+//    };
 
 
 }

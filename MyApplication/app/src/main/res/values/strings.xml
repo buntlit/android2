@@ -4,9 +4,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Weather App</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="sw_humidity">Humidity</string>
-    <string name="sw_pressure">Pressure</string>
-    <string name="sw_weather">Weather</string>
+    <string name="sw_city1">Moscow</string>
+    <string name="sw_city2">Kazan</string>
+    <string name="sw_city3">Saint Petersburg</string>
     <string name="hint">Enter default city</string>
     <string name="btn">Enter</string>
 

@@ -72,7 +72,7 @@ public class WeatherApi {
             @Override
             public void run() {
                 try {
-                    OpenWeather model = getWeather("Moscow");
+                    OpenWeather model = getWeather(MainActivity.defCity);
                     if (model == null) return;
 
                     handler.post(new Runnable() {
@@ -87,6 +87,6 @@ public class WeatherApi {
                     e.printStackTrace();
                 }
             }
-        }, 2000, 10000);
+        }, 2000, 5000);
     }
 }

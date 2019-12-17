@@ -1,18 +1,20 @@
 package com.example.myapplication;
 
+import android.content.ClipData;
 import android.content.SharedPreferences;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.myapplication.ui.weather.WeatherViewModel;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -25,17 +27,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private SensorManager sensorManager;
-//    private Sensor sensorTemp;
+    //    private Sensor sensorTemp;
 //    private Sensor sensorHum;
 //    public static String textTemp;
 //    public static String textHum;
     public static String defCity;
     SharedPreferences preferences;
+    private WeatherViewModel weatherViewModel;
 
 
     @Override
@@ -79,36 +83,30 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         int id = item.getItemId();
-        if (id == R.id.sw_humidity || id == R.id.sw_pressure || id == R.id.sw_weather) {
+
+        if (id == R.id.sw_city1 || id == R.id.sw_city2 || id == R.id.sw_city3) {
             item.setChecked(!item.isChecked());
+            defCity = item.getTitle().toString();
+            preferences.edit().putString("defCity", defCity).commit();
+            defCity = preferences.getString("defCity", "Moscow");
         }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Button btn = findViewById(R.id.btn);
-        final EditText editText = findViewById(R.id.enter_city);
-
-        btn.setOnClickListener(new View.OnClickListener() {
+        weatherViewModel = ViewModelProviders.of(this).get(WeatherViewModel.class);
+        final TextView textView = findViewById(R.id.text_weather);
+        weatherViewModel.getText().observe(this, new Observer<String>() {
             @Override
-            public void onClick(View view) {
-                if (!editText.getText().toString().equals("")) {
-                    defCity = editText.getText().toString();
-                }
-                preferences.edit().putString("defCity", defCity).commit();
-                defCity = preferences.getString("defCity", "Moscow");
+            public void onChanged(@Nullable String s) {
+                textView.setText(s);
             }
         });
+        return super.onOptionsItemSelected(item);
+    }
 
 
 //        sensorTemp = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
 //        sensorHum = sensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY);
 //        sensorManager.registerListener(listenerHum, sensorHum, SensorManager.SENSOR_DELAY_NORMAL);
 //        sensorManager.registerListener(listenerTemp, sensorTemp, SensorManager.SENSOR_DELAY_NORMAL);
-    }
+
 
 //    private void showTempSensors(SensorEvent event) {
 //        textTemp = "Temperature value = " + event.values[0] + "°C";

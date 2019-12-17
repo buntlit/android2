@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/sw_humidity"
-        android:checkable="true"
-        android:orderInCategory="100"
-        android:title="@string/sw_humidity"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/sw_pressure"
-        android:checkable="true"
-        android:orderInCategory="200"
-        android:title="@string/sw_pressure"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/sw_weather"
-        android:checkable="true"
-        android:orderInCategory="300"
-        android:title="@string/sw_weather"
-        app:showAsAction="never" />
+    <group
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/sw_city1"
+            android:orderInCategory="100"
+            android:title="@string/sw_city1"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/sw_city2"
+            android:orderInCategory="200"
+            android:title="@string/sw_city2"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/sw_city3"
+            android:orderInCategory="300"
+            android:title="@string/sw_city3"
+            app:showAsAction="never" />
+    </group>
 </menu>

@@ -20,6 +20,9 @@ import com.example.myapplication.model.OpenWeather;
 public class WeatherFragment extends Fragment implements WeatherApiInterface {
 
     private WeatherViewModel weatherViewModel;
+    public static Integer temp;
+    public static Integer hum;
+    public static Double wind;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -46,9 +49,12 @@ public class WeatherFragment extends Fragment implements WeatherApiInterface {
     @Override
     public void updateWeather(OpenWeather model) {
         try {
-            ((TextView) getActivity().findViewById(R.id.text_hum)).setText("Humidity: " + Integer.toString(model.getMain().getHumidity()) + "%");
-            ((TextView) getActivity().findViewById(R.id.text_temp)).setText("Temperature: " + Double.toString(model.getMain().getTemp() - 273.0) + " C");
-            ((TextView) getActivity().findViewById(R.id.text_wind_speed)).setText("Wind speed: " + Double.toString(model.getWind().getSpeed()) + " m/s");
+            hum = model.getMain().getHumidity();
+            temp = (int)(model.getMain().getTemp() - 273.0);
+            wind = model.getWind().getSpeed();
+            ((TextView) getActivity().findViewById(R.id.text_hum)).setText("Humidity: " + Integer.toString(hum) + "%");
+            ((TextView) getActivity().findViewById(R.id.text_temp)).setText("Temperature: " + Integer.toString(temp) + " C");
+            ((TextView) getActivity().findViewById(R.id.text_wind_speed)).setText("Wind speed: " + Double.toString(wind) + " m/s");
         }catch (NullPointerException e){
 
         }

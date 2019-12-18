@@ -1,20 +1,17 @@
 package com.example.myapplication;
 
-import android.content.ClipData;
 import android.content.SharedPreferences;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.myapplication.ui.weather.WeatherViewModel;
+import com.example.myapplication.db.DataSource;
+import com.example.myapplication.ui.weather.WeatherFragment;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -25,28 +22,43 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+
+import java.sql.SQLException;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private SensorManager sensorManager;
-    //    private Sensor sensorTemp;
+//    private SensorManager sensorManager;
+//    private Sensor sensorTemp;
 //    private Sensor sensorHum;
 //    public static String textTemp;
 //    public static String textHum;
     public static String defCity;
     SharedPreferences preferences;
-    private WeatherViewModel weatherViewModel;
+    private DataSource dataSource;
+    private Button button;
+    private EditText editText;
+    private NoteAdapter adapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+
+        dataSource = new DataSource(this);
+        try {
+            dataSource.open();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        adapter = new NoteAdapter(dataSource.getReader());
+
+//        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+
         preferences = getPreferences(MODE_PRIVATE);
         defCity = preferences.getString("defCity", "Moscow");
 
@@ -80,6 +92,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        button = findViewById(R.id.btn);
+        editText = findViewById(R.id.enter_city);
+
+        button.setOnClickListener(view -> {
+            if (!editText.getText().toString().equals("")) {
+                defCity = editText.getText().toString();
+            }
+            preferences.edit().putString("defCity", defCity).commit();
+            defCity = preferences.getString("defCity", "Moscow");
+            dataSource.addOrEdit(defCity, WeatherFragment.temp, WeatherFragment.hum, WeatherFragment.wind);
+            refreshData();
+        });
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         int id = item.getItemId();
@@ -89,18 +118,15 @@ public class MainActivity extends AppCompatActivity {
             defCity = item.getTitle().toString();
             preferences.edit().putString("defCity", defCity).commit();
             defCity = preferences.getString("defCity", "Moscow");
+            dataSource.addOrEdit(defCity, WeatherFragment.temp, WeatherFragment.hum, WeatherFragment.wind);
+            refreshData();
         }
-        weatherViewModel = ViewModelProviders.of(this).get(WeatherViewModel.class);
-        final TextView textView = findViewById(R.id.text_weather);
-        weatherViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
         return super.onOptionsItemSelected(item);
     }
-
+    private void refreshData() {
+        dataSource.getReader().refresh();
+        adapter.notifyDataSetChanged();
+    }
 
 //        sensorTemp = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
 //        sensorHum = sensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY);

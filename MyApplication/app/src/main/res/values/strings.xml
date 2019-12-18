@@ -10,10 +10,14 @@
     <string name="hint">Enter default city</string>
     <string name="btn">Enter</string>
 
+    <string name="menu_delete">Delete</string>
+    <string name="menu_delete_all">Delete All</string>
+
     <string name="menu_weather">Show Weather</string>
     <string name="menu_weather_hist">Show Weather History</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="menu_tools">Tools</string>
     <string name="about">About Dev</string>
     <string name="menu_feedback">Feedback</string>
+
 </resources>

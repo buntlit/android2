@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Weather App</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="sw_city1">Moscow</string>
+    <string name="sw_city2">Kazan</string>
+    <string name="sw_city3">Saint Petersburg</string>
+    <string name="hint">Enter default city</string>
+    <string name="btn">Enter</string>
+
+    <string name="menu_weather">Show Weather</string>
+    <string name="menu_weather_hist">Show Weather History</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="about">About Dev</string>
+    <string name="menu_feedback">Feedback</string>
+</resources>

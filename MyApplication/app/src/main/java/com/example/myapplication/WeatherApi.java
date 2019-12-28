@@ -52,11 +52,12 @@ public class WeatherApi {
 
     public interface OpenWea {
         @GET("data/2.5/weather")
-        Call<OpenWeather> getWeather(@Query("q") String city, @Query("appid") String keyApi);
+//        Call<OpenWeather> getWeather(@Query("q") String city, @Query("appid") String keyApi);
+        Call<OpenWeather> getWeather(@Query("lat") String lat, @Query("lon") String lon, @Query("appid") String keyApi);
     }
 
     private OpenWeather getWeather(String cityName) throws Exception {
-        Call<OpenWeather> call = weaApi.getWeather(cityName + ",ru", "2f0e5b22131acf399237f29d84fdcfeb");
+        Call<OpenWeather> call = weaApi.getWeather(Double.toString(MainActivity.lat), Double.toString(MainActivity.lon), "2f0e5b22131acf399237f29d84fdcfeb");
 
         Response<OpenWeather> response = call.execute();
 
@@ -83,6 +84,7 @@ public class WeatherApi {
                             }
                         }
                     });
+                    MainActivity.defCity = model.getName();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

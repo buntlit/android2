@@ -1,10 +1,16 @@
 package com.example.myapplication;
 
+import android.Manifest;
 import android.content.SharedPreferences;
-import android.hardware.SensorManager;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -21,17 +27,15 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 
 import java.sql.SQLException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     private AppBarConfiguration mAppBarConfiguration;
-//    private SensorManager sensorManager;
+    //    private SensorManager sensorManager;
 //    private Sensor sensorTemp;
 //    private Sensor sensorHum;
 //    public static String textTemp;
@@ -42,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
     private Button button;
     private EditText editText;
     private NoteAdapter adapter;
+    private static final int PERMISION_REQUEST_CODE = 100;
+    private LocationManager locationManager;
+    private String provider;
+    public static double lat;
+    public static double lon;
 
 
     @Override
@@ -62,7 +71,14 @@ public class MainActivity extends AppCompatActivity {
         preferences = getPreferences(MODE_PRIVATE);
         defCity = preferences.getString("defCity", "Moscow");
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            requestLocation();
+        }else{
+            requestLocationPermission();
+        }
+
+            Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -75,6 +91,69 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+    }
+    private void requestLocation() {
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) return;
+
+        locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+
+        provider = locationManager.getBestProvider(criteria, true);
+        if (provider!=null){
+            locationManager.requestLocationUpdates(provider, 10000, 10, new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    lat = location.getLatitude();
+                    lon = location.getLongitude();
+                }
+
+                @Override
+                public void onStatusChanged(String s, int i, Bundle bundle) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String s) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String s) {
+
+                }
+            });
+        }
+
+    }
+
+    private void requestLocationPermission() {
+
+        if(!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CALL_PHONE)){
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISION_REQUEST_CODE);
+        }
+
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        int index = -1;
+        for (int i = 0; i < permissions.length; i++) {
+            if (permissions[i] == Manifest.permission.SEND_SMS) {
+                index = i;
+                break;
+            }
+        }
+        if (index == -1)
+            return;
+        if (requestCode == PERMISION_REQUEST_CODE && grantResults[index] == PackageManager.PERMISSION_GRANTED)
+            requestLocation();
     }
 
     @Override
@@ -123,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     private void refreshData() {
         dataSource.getReader().refresh();
         adapter.notifyDataSetChanged();

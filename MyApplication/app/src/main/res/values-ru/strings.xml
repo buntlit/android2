@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">Прогноз погоды</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Погодное приложение</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="sw_city1">Moscow</string>
+    <string name="sw_city2">Kazan</string>
+    <string name="sw_city3">Saint Petersburg</string>
+    <string name="hint">Введите домашний город (на англ)</string>
+    <string name="btn">Ввести</string>
+    <string name="url">http://openweathermap.org/img/wn/</string>
+    <string name="size_and_tipe">@2x.png</string>
+
+    <string name="menu_delete">Удалить</string>
+    <string name="menu_delete_all">Удалить всё</string>
+
+    <string name="menu_weather">Показать погоду</string>
+    <string name="menu_weather_hist">Показать историю запросов</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="about">О разработчике</string>
+    <string name="menu_feedback">Обратная связь</string>
+
+    <string name="default_city">Домашний город</string>
+    <string name="coordinate_city">Город по GPS</string>
+    <string name="weather_id">Погода на 48 часов:</string>
+
+    <string name="temp">Температура:</string>
+    <string name="hum">Влажность:</string>
+    <string name="wind_speed"> м/с</string>
+    <string name="weather">Погода: </string>
+    <string name="wind">Скорость ветра: </string>
+
+    <string name="weather_after3">Через 3 часа:</string>
+    <string name="weather_after6">Через 6 часов:</string>
+    <string name="weather_after9">Через 9 часов:</string>
+    <string name="weather_after12">Через 12 часов:</string>
+    <string name="weather_after15">Через 15 часов:</string>
+    <string name="weather_after18">Через 18 часов:</string>
+    <string name="weather_after21">Через 21 часов:</string>
+    <string name="weather_after24">Через 24 часов:</string>
+
+</resources>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Weather Forecast App</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Weather App</string>
@@ -9,6 +9,8 @@
     <string name="sw_city3">Saint Petersburg</string>
     <string name="hint">Enter default city</string>
     <string name="btn">Enter</string>
+    <string name="url">http://openweathermap.org/img/wn/</string>
+    <string name="size_and_tipe">@2x.png</string>
 
     <string name="menu_delete">Delete</string>
     <string name="menu_delete_all">Delete All</string>
@@ -19,5 +21,24 @@
     <string name="menu_tools">Tools</string>
     <string name="about">About Dev</string>
     <string name="menu_feedback">Feedback</string>
+
+    <string name="default_city">Home city</string>
+    <string name="coordinate_city">City by GPS</string>
+    <string name="weather_id">Weather forecast for 24 hours:</string>
+
+    <string name="temp">Temperature:</string>
+    <string name="hum">Humidity:</string>
+    <string name="wind_speed"> m/s</string>
+    <string name="weather">Weather:</string>
+    <string name="wind">Wind:</string>
+
+    <string name="weather_after3">After 3 hours:</string>
+    <string name="weather_after6">After 6 hours:</string>
+    <string name="weather_after9">After 9 hours:</string>
+    <string name="weather_after12">After 12 hours:</string>
+    <string name="weather_after15">After 15 hours:</string>
+    <string name="weather_after18">After 18 hours:</string>
+    <string name="weather_after21">After 21 hours:</string>
+    <string name="weather_after24">After 24 hours:</string>
 
 </resources>
